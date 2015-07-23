@@ -1,0 +1,31 @@
+#!/bin/bash
+
+cd nauty
+
+gcc -c -O3 *.c
+
+cd ..
+
+g++ -c -D_GLIBCPP_USE_C99 -D__WXMAC__ -DWX_PRECOMP -DNO_GCC_PRAGMA -I../wxMac-2.6.2/osxbuild/lib/wx/include/mac-ansi-release-static-2.6 -I../wxMac-2.6.2/include -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -fpascal-strings -I../wxMac-2.6.2/src/mac/carbon/morefilex -I/Developer/Headers/FlatCarbon -O3 -Wall -Wundef -Wno-ctor-dtor-privacy -fno-common *.cpp
+
+g++ -o fanmod RandESU-GUIApp.o ResultDialog.o aboutDlg.o esuThread.o graph64.o maingraph.o output.o randesuFrm.o random.o nauty/nauty.o nauty/naugraph.o nauty/nautinv.o nauty/nautil.o -framework QuickTime -framework IOKit -framework Carbon -framework Cocoa -framework System -L../wxMac-2.6.2/osxbuild/lib -lwx_mac_core-2.6 -lwx_base_carbon-2.6 -lwxtiff-2.6 -lwxjpeg-2.6 -lwxpng-2.6 -lwxexpat-2.6 -framework QuickTime -framework IOKit -framework Carbon -framework Cocoa -framework System -lz -lpthread -liconv -framework WebKit
+
+strip fanmod
+
+/Developer/Tools/Rez -d __DARWIN__ -t APPL -d __WXMAC__     -i .  -i ./nauty -i ../wxMac-2.6.2/osxbuild/include -o fanmod Carbon.r
+
+/Developer/Tools/SetFile -a C fanmod
+
+mkdir -p fanmod.app/Contents
+mkdir -p fanmod.app/Contents/MacOS
+mkdir -p fanmod.app/Contents/Resources
+
+sed -e "s/IDENTIFIER/`echo . | sed -e 's,\.\./,,g' | sed -e 's,/,.,g'`/" \
+-e "s/EXECUTABLE/fanmod/" \
+-e "s/VERSION/2.6.2/" \
+../wxMac-2.6.2/src/mac/carbon/Info.plist.in >fanmod.app/Contents/Info.plist
+
+echo -n "APPL????" >fanmod.app/Contents/PkgInfo
+
+ln -f fanmod fanmod.app/Contents/MacOS/fanmod
+
