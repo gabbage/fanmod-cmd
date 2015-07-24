@@ -12,21 +12,17 @@ cd ..
 echo --- COMPILE FANMOD ---
 
 rm *.o
-#g++ -c -O3 `wx-config --cxxflags` RandESU-GUIApp.cpp
-g++ -c -O3 `wx-config --cxxflags` main.cpp
-#g++ -c -O3 `wx-config --cxxflags` aboutDlg.cpp 
-g++ -c -O3 `wx-config --cxxflags` graph64.cpp 
-g++ -c -O3 `wx-config --cxxflags` output.cpp 
-g++ -c -O3 `wx-config --cxxflags` random.cpp 
-#g++ -c -O3 `wx-config --cxxflags` ResultDialog.cpp 
-g++ -c -O3 `wx-config --cxxflags` esuThread.cpp 
-g++ -c -O3 `wx-config --cxxflags` maingraph.cpp 
+g++ -c -O3 -std=c++11 -Wno-deprecated -Wcpp `wx-config --cxxflags` main.cpp
+g++ -c -O3 -std=c++11 -Wno-deprecated -Wcpp `wx-config --cxxflags` graph64.cpp 
+g++ -c -O3 -std=c++11 -Wno-deprecated -Wcpp `wx-config --cxxflags` output.cpp 
+g++ -c -O3 -std=c++11 -Wno-deprecated -Wcpp `wx-config --cxxflags` random.cpp 
+g++ -c -O3 -std=c++11 -Wno-deprecated -Wcpp `wx-config --cxxflags` maingraph.cpp 
 
 echo --- LINK ---
 
-g++ -o fanmod_cmd main.o graph64.o output.o random.o esuThread.o maingraph.o nauty/gtools.o nauty/nautil.o nauty/nauty.o nauty/naugraph.o nauty/nautinv.o `wx-config --libs` -lboost_program_options
+g++ -ggdb -o fanmod_cmd main.o graph64.o output.o random.o maingraph.o nauty/gtools.o nauty/nautil.o nauty/nauty.o nauty/naugraph.o nauty/nautinv.o `wx-config --libs` -lboost_program_options
 
 echo --- STRIP ---
 
-strip fanmod
+strip fanmod_cmd
 

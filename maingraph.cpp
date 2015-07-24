@@ -544,17 +544,6 @@ double sampling(const maingraph & maing, long* v_extension, short G_N,
 
 					}
 
-                    // If the user cancelled, exit
-                    if (thread->TestDestroy()){
-                		return 0.0;        
-                    }
-
-//----------		// Progress indicator event
-                    if (perc_number > 0) // send events only when necessary
-                    while (count_subgr > (equiv100p * perc_index * perc_number / 100) && perc_index < 100 / perc_number) {
-                        wxPostEvent(frame, percentage_event);
-                        ++perc_index;
-                    }
 
 				} else {  //go deeper
 					SOURCE_VERTEX = v_extension[scope_place[depth]];
